@@ -50,11 +50,11 @@ def main(args):
     try:
         data = pd.read_csv('./test.csv',header=None)
     except:
+        print('file so small, we can not conculate graph2vec')
         with open('redefine_fcg.dot','w') as f:
             f.write(fcg_Dot)
         cmd = 'python graph2vec.py --input-path ./ --output-path ./test.csv'
         os.system(cmd)
-
         data = pd.read_csv('./test.csv',header=None)
 
 
