@@ -6,7 +6,7 @@ def parameter_parser():
 
     parser.add_argument('--model',
                         nargs='?',
-                        default='LR',
+                        default='SVM',
                         help='Select the model(KNN,LR,MLP,RF,SVM).')
     
     

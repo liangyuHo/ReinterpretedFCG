@@ -28,7 +28,7 @@ Dataset={}
 # def ELF_p(file):
 #     return '/mnt/database0/linuxmal/'+file[:2]+'/'+file
 def ELF_p(file):
-    return './benignware/'+file[:2]+'/'+file
+    return './binary/'+file
 
 
 #透過r2.cmd('afl)找所有Function
@@ -42,7 +42,7 @@ def radare2_get_function(r2):
     return function
 
 #透過r2.cmd('pifj')找到function之json，並且透過dict搜尋該function之opcode
-def radare2_get_function_opcode(r2,function):
+def radare2_get_function_opcode(r2,function,name):
     for f in function:
         try:
             if f[:3]=='fcn':
@@ -53,20 +53,18 @@ def radare2_get_function_opcode(r2,function):
                 for i in range(len(json['ops'])):
                     tmp.append(json['ops'][i]['opcode'].split(' ')[0])
                 #print(tmp)
-                np.save('./DetectionUserDefined/'+f, tmp)
+                np.save('./DetectionUserDefined/'+f+'_'+name, tmp)
                 print('---')
         except:
             pass
             print('Collect error!')
 
 #找每支file中每個function之 opcode，並且儲存成npy格式
-def radare2_analysis(path):
-    if not os.path.exists('./DetectionUserDefined'):
-        os.mkdir('./DetectionUserDefined')
+def radare2_analysis(file,path,name):
     r2=r2pipe.open(path)
     r2.cmd('aaaa')
     function=radare2_get_function(r2)
-    radare2_get_function_opcode(r2,function)
+    radare2_get_function_opcode(r2,function,name)
 
         
 def read_label():
@@ -98,7 +96,7 @@ def main():
                 f.close()
                 fpath=ELF_p(name)#找file path
                 print(fpath)
-                radare2_analysis(fpath)#透過radare2 進行分析
+                radare2_analysis(name,fpath,name)#透過radare2 進行分析
             except:
                 pass
             #else:
@@ -108,4 +106,3 @@ def main():
 
 if __name__=='__main__':
     main()
-

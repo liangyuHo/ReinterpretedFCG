@@ -1,23 +1,26 @@
+"""Parameter parser to set the model hyperparameters."""
+
 import argparse
 
-
 def parameter_parser():
+    """
+    A method to parse up command line parameters.
+    By default it gives an embedding of the partial NCI1 graph dataset.
+    The default hyperparameters give a good quality representation without grid search.
+    Representations are sorted by ID.
+    """
     parser = argparse.ArgumentParser(description="Run Graph2Vec.")
 
-    parser.add_argument('--input-path',
-                        nargs='?',
-                        default='./bin/006b4ca023bf1f3139b1e8d30ee09f2abc6079657b77ea401a9a3c0ed1af42c2',
-                        help='input binary file.')
+    parser.add_argument("--input-path",
+                        nargs="?",
+                        default="./dataset/",
+	                help="Input folder with jsons.")
 
-    parser.add_argument('--model',
-                        nargs='?',
-                        default='mlp',
-                        help='Select the model(rf, knn, svm, mlp).')
-    
     parser.add_argument("--output-path",
                         nargs="?",
-                        default="./feature/feature.csv",
+                        default="./features/nci1.csv",
 	                help="Embeddings path.")
+
     parser.add_argument("--dimensions",
                         type=int,
                         default=128,
@@ -35,7 +38,7 @@ def parameter_parser():
 
     parser.add_argument("--min-count",
                         type=int,
-                        default=0,
+                        default=1,
 	                help="Minimal structural feature count. Default is 5.")
 
     parser.add_argument("--wl-iterations",
@@ -57,6 +60,5 @@ def parameter_parser():
                     type=int,
                     default=0,
                 help="Rename?")
-
 
     return parser.parse_args()

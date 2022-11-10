@@ -6,11 +6,14 @@ import csv,os
 import PreprocessingFcn
 import time
 
+start = time.time()
+Rename=PreprocessingFcn.Read_similar_opcode_fcn('./fdupes.txt')
+end = time.time()
+print('Read Rename Dict:',end - start)
 
-
-def Re_create(G):
-    Rename=PreprocessingFcn.Read_similar_opcode_fcn('./fdupes.txt')
-    data = G
+def Re_create(path,filename):
+    with open(path,'r') as file:
+        data=file.read()
     label={}
     G=nx.DiGraph() 
     for lines in data.split('\n'):
@@ -24,7 +27,7 @@ def Re_create(G):
                 func=tmp[1][7:]
                 func=func.replace('"','')
                 if func[:3]=='fcn':
-                    label[tmp[0]]=Rename[func]
+                    label[tmp[0]]=Rename[func+'_'+filename]
                 else:
                     label[tmp[0]]=func #addr =function name
         except:
@@ -42,7 +45,8 @@ def Re_create(G):
         except:
             pass
     #print(nx.info(G))
-    nx.drawing.nx_pydot.write_dot(G, './redefine_fcg.dot')
+    name=path.replace('./cfg_output/','')
+    nx.drawing.nx_pydot.write_dot(G, './Redefine/'+name)
 
 def build_graph(path):
     with open(path,'r') as file:
@@ -57,4 +61,18 @@ def build_graph(path):
             pass
     return G
 
+def main():
+    Malware_path='./cfg_output/'
+    for dirPath,dirNames,fileNames in os.walk(Malware_path):
+        fileNames.sort()
+        for index,f in enumerate(fileNames):
+            fpath=dirPath+f
+            filename=f.replace('.dot','')
+            print(index,f)
+            Re_create(fpath,filename)
 
+if __name__=='__main__':
+    start = time.time()
+    main()
+    end = time.time()
+    print('Redraw Graph:',end - start)

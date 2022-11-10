@@ -143,6 +143,7 @@ def save_embedding(output_path, model, files, dimensions,path):
     for f in files:
         #modified file name
         #G=build_graph(f)
+        print(f)
         Graph_info=[]
         G=build_graph(f)
         size=os.path.getsize(f)
@@ -163,7 +164,6 @@ def save_embedding(output_path, model, files, dimensions,path):
             out.append([f] + list(model.docvecs["g_"+identifier])+Graph_info+[len(list(nx.connected_components(G.to_undirected())))])#
         except:
             pass
-    
     column_names = ["type"]+["x_"+str(dim) for dim in range(dimensions+3)]#+3
     out = pd.DataFrame(out, columns=column_names)
     out = out.sort_values(["type"])
@@ -179,9 +179,9 @@ def main(args):
     graphs = glob.glob(args.input_path + "*.dot")
     for graph in graphs:
         
-        if os.path.getsize(graph) <5000:
+        if os.path.getsize(graph) < 0:
             graphs.remove(graph)
-            #print('Remove',graph)
+            print('Remove',graph)
         else:
             continue
     print('Finish Read Graph')
@@ -209,5 +209,4 @@ if __name__ == "__main__":
     start_time = time.time()
     main(args)
     print("--- %s seconds ---" % (time.time() - start_time))
-
 
