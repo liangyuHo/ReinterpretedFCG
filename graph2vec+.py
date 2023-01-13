@@ -13,7 +13,7 @@ import networkx as nx
 import numpy as np
 from tqdm import tqdm
 from joblib import Parallel, delayed
-from param_parser import parameter_parser
+from utils import parameter_parser
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 import csv
 #import PreprocessingFcn
@@ -176,7 +176,7 @@ def main(args):
     Learn the embedding and save it.
     :param args: Object with the arguments.
     """
-    graphs = glob.glob(args.input_path + "*.dot")
+    graphs = glob.glob('./Redefine/' + "*.dot")
     for graph in graphs:
         
         if os.path.getsize(graph) < 0:
@@ -201,12 +201,8 @@ def main(args):
                     epochs=args.epochs,
                     alpha=args.learning_rate)
 
-    save_embedding(args.output_path, model, graphs, args.dimensions,args.input_path)
+    save_embedding('./test.csv', model, graphs, args.dimensions,'./Redefine/')
 
 
-if __name__ == "__main__":
-    args = parameter_parser()
-    start_time = time.time()
-    main(args)
-    print("--- %s seconds ---" % (time.time() - start_time))
+main(args)
 

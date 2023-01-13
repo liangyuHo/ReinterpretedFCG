@@ -9,7 +9,7 @@ import shutil
 #import Filelist
 import warnings
 import csv
-from param_parser import parameter_parser
+from utils import parameter_parser
 
 
 def radare(fname,target,name):
@@ -41,10 +41,11 @@ def signal_handler(signum, frame):
 def main(args):
     sys.setrecursionlimit(100000000) 
     feature_vec = {}  
-
+    filePath=''
     count = 0
          
-    print('Extracting CFG from', args.input_path)
+    #print('Extracting CFG from', args.input_path)
+    print('Extracting CFG from', filePath)
     f = args.input_path
              
             #if f in list:
@@ -85,7 +86,7 @@ def main(args):
         print(f, 'error')
     
     
-
+main(args)
 if __name__=='__main__':
     args = parameter_parser()
     main(args)

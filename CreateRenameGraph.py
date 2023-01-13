@@ -5,12 +5,6 @@ import networkx as nx
 import csv,os
 import PreprocessingFcn
 import time
-
-start = time.time()
-Rename=PreprocessingFcn.Read_similar_opcode_fcn('./fdupes.txt')
-end = time.time()
-print('Read Rename Dict:',end - start)
-
 def Re_create(path,filename):
     with open(path,'r') as file:
         data=file.read()
@@ -71,8 +65,17 @@ def main():
             print(index,f)
             Re_create(fpath,filename)
 
+start = time.time()
+#Rename=PreprocessingFcn.Read_similar_opcode_fcn('./fdupes.txt')
+end = time.time()
+print('Read Rename Dict:',end - start)
+
+main()
+
+'''
 if __name__=='__main__':
     start = time.time()
     main()
     end = time.time()
     print('Redraw Graph:',end - start)
+'''

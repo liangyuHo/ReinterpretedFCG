@@ -15,23 +15,18 @@ import csv,random
 from tqdm import tqdm
 
 
-#Result=[],
+
 Dataset={}
 
-# #找ELF file path
-# def ELF_p(file):
-#     cmd='find /mnt/database0/linuxmal -name "'+file+'" -type f' 
-#     find_path=list(os.popen(cmd))[0] 
-#     find_path=find_path.replace('\n','') 
-#     return find_path
 
-# def ELF_p(file):
-#     return '/mnt/database0/linuxmal/'+file[:2]+'/'+file
+
+
+
 def ELF_p(file):
     return './binary/'+file
 
 
-#透過r2.cmd('afl)找所有Function
+
 def radare2_get_function(r2):
     func=r2.cmd('afl')
     function=[]
@@ -41,7 +36,7 @@ def radare2_get_function(r2):
                 function.append(word)
     return function
 
-#透過r2.cmd('pifj')找到function之json，並且透過dict搜尋該function之opcode
+
 def radare2_get_function_opcode(r2,function,name):
     for f in function:
         try:
@@ -59,7 +54,6 @@ def radare2_get_function_opcode(r2,function,name):
             pass
             print('Collect error!')
 
-#找每支file中每個function之 opcode，並且儲存成npy格式
 def radare2_analysis(file,path,name):
     r2=r2pipe.open(path)
     r2.cmd('aaaa')
@@ -94,9 +88,9 @@ def main():
                 with open('Recording_num2.txt', 'a') as f:
                     f.write(str(index)+'\n')
                 f.close()
-                fpath=ELF_p(name)#找file path
+                fpath=ELF_p(name)
                 print(fpath)
-                radare2_analysis(name,fpath,name)#透過radare2 進行分析
+                radare2_analysis(name,fpath,name)
             except:
                 pass
             #else:
@@ -104,5 +98,4 @@ def main():
         
 
 
-if __name__=='__main__':
-    main()
+main()
